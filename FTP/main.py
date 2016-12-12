@@ -117,3 +117,4 @@ while True:
         print("-" + s.quit())
         print()
         break
+exit()
