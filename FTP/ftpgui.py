@@ -11,6 +11,11 @@ def connectServer():
         msg = ftp.connect(ip,port)
         text_servermsg.insert(END,"\n")
         text_servermsg.insert(END,msg)
+        lbl_login.place(x=150,y=20)
+        ent_login.place(x=150,y=40)
+        lbl_pass.place(x=150,y=60)
+        ent_pass.place(x=150,y=80)
+        btn_login.place(x=182,y=110)
     except:
         text_servermsg.insert(END,"\n")
         text_servermsg.insert(END,"Unable to connect")
@@ -34,7 +39,7 @@ def loginServer():
 
         
 def displayDir():
-    libox_serverdir.insert(0,"----------------------")
+    libox_serverdir.insert(0,"--------------------------------------------")
     dirlist = []
     dirlist = ftp.nlst()
     for item in dirlist:
@@ -165,11 +170,6 @@ lbl_port.place(x=20,y=60)
 ent_port.place(x=20,y=80)
 btn_connect.place(x=52,y=110)
 text_servermsg.place(x=20,y=150)
-lbl_login.place(x=150,y=20)
-ent_login.place(x=150,y=40)
-lbl_pass.place(x=150,y=60)
-ent_pass.place(x=150,y=80)
-btn_login.place(x=182,y=110)
 
 lbl_dir.place(x=700,y=143)
 libox_serverdir.place(x=700,y=165)
