@@ -145,18 +145,18 @@ btn_login = tkinter.Button(window, text="Login", command=loginServer)
 
 #Directory listing
 lbl_dir = tkinter.Label(window, text="Directory listing:")
-libox_serverdir = tkinter.Listbox(window)
+libox_serverdir = tkinter.Listbox(window,width=40,height=14)
 
 #Options
 lbl_input = tkinter.Label(window, text="Input")
 ent_input = tkinter.Entry(window)
-btn_chdir = tkinter.Button(window, text="Change Directory", command=changeDirectory)
-btn_crdir = tkinter.Button(window, text="Create Directory", command=createDirectory)
-btn_deldir = tkinter.Button(window, text="Delete Directory", command=deleteDirectory)
-btn_delfile = tkinter.Button(window, text="Delete File", command=deleteFile)
-btn_downfile = tkinter.Button(window, text="Download File", command=downloadFile)
-btn_upfile = tkinter.Button(window, text="Upload File", command=uploadFile)
-btn_quit = tkinter.Button(window, text="Disconnect", command=closeConnection)
+btn_chdir = tkinter.Button(window, text="Change Directory", command=changeDirectory,width=15)
+btn_crdir = tkinter.Button(window, text="Create Directory", command=createDirectory,width=15)
+btn_deldir = tkinter.Button(window, text="Delete Directory", command=deleteDirectory,width=15)
+btn_delfile = tkinter.Button(window, text="Delete File", command=deleteFile,width=15)
+btn_downfile = tkinter.Button(window, text="Download File", command=downloadFile,width=15)
+btn_upfile = tkinter.Button(window, text="Upload File", command=uploadFile,width=15)
+btn_quit = tkinter.Button(window, text="Disconnect", command=closeConnection,width=15)
 
 #Place widgits
 lbl_ip.place(x=20,y=20)
@@ -169,7 +169,7 @@ lbl_login.place(x=150,y=20)
 ent_login.place(x=150,y=40)
 lbl_pass.place(x=150,y=60)
 ent_pass.place(x=150,y=80)
-btn_login.place(x=150,y=110)
+btn_login.place(x=182,y=110)
 
 lbl_dir.place(x=700,y=143)
 libox_serverdir.place(x=700,y=165)
@@ -185,14 +185,6 @@ btn_downfile.place(x=850,y=450)
 btn_upfile.place(x=850,y=480)
 btn_quit.place(x=850,y=510)
 
-libox_serverdir.config(height=14,width=40)
-btn_chdir.config(width=15)
-btn_crdir.config(width=15)
-btn_deldir.config(width=15)
-btn_delfile.config(width=15)
-btn_downfile.config(width=15)
-btn_upfile.config(width=15)
-btn_quit.config(width=15)
 
 #Create
 window.mainloop()
