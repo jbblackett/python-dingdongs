@@ -1,27 +1,34 @@
-#Works if ethernet in bridge
-#Makes post requests to IFTTT - would be faster with phue
+from phue import Bridge
+import time as t
 
-import requests
+b = Bridge('192.168.0.56')
+l = 4
 
-print("Welcome")
-print()
-print("1. Turn off light")
-print("2. Turn on light")
-print("3. Set light brightness")
+try:
+    b.connect()
+    print("Connected to bridge.")
+except:
+    print("Could not connect to bridge.")
 
-while True:
-    option = ""
-    while not ((option == "1") or (option == "2") or (option == "3")):
-        option = input("Please enter a number: ")
-    if option == "1":
-        r = requests.post("https://maker.ifttt.com/trigger/lightoff/with/key/HzW4Sk-C8fkYJ5UhkuJCv")
-    elif option == "2":
-        r = requests.post("https://maker.ifttt.com/trigger/light/with/key/HzW4Sk-C8fkYJ5UhkuJCv", data = {"value1" : "100", "value2" : "null", "value3" : "null"})
-    elif option == "3":
-        brightness = 101
-        while not ((int(brightness) >= 0) and (int(brightness) <= 100)):
-            brightness = input("Brightness percentage: ")
-        values = {"value1" : brightness, "value2" : "null", "value3" : "null"}
-        url = "https://maker.ifttt.com/trigger/light/with/key/HzW4Sk-C8fkYJ5UhkuJCv"
-        r = requests.post(url, data = values)
-    print()
+def lightOff():
+    try:
+        b.set_light(l,'on',False)
+        print("Light turned off.")
+    except:
+        print("Could not turn off light.")
+
+def lightOn():
+    try:
+        b.set_light(l,'on',True)
+        b.set_light(l,'bri',255)
+        print("Light turned on.")
+    except:
+        print("Could not turn on light")
+
+def lightBrightness(value):
+    try:
+        b.set_light(l,'on',True)
+        b.set_light(l,'bri',value)
+        print("Light brightness changed to " + str(value))
+    except:
+        print("Could not set light brightness.")
