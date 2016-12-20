@@ -1,10 +1,10 @@
 import spotipy
 import spotipy.util as util
 
-username = "monitorlad210"
-client = "f677c230b89246a3b43875be57390003"
-secret = "519bae37cec54d078ec773012d343517"
-redirect = "http://localhost:8888/callback"
+username = "#"
+client = "#"
+secret = "#"
+redirect = "#"
 
 s = None
 
