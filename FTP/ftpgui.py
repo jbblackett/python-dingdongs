@@ -37,7 +37,7 @@ def loginServer():
         text_servermsg.insert(END,"\n")
         text_servermsg.insert(END,"Unable to login")
 
-        
+
 def displayDir():
     libox_serverdir.insert(0,"--------------------------------------------")
     dirlist = []
@@ -67,7 +67,7 @@ def createDirectory():
         text_servermsg.insert(END,"\n")
         text_servermsg.insert(END,"Unable to create directory")
     displayDir()
-    
+
 def deleteDirectory():
     directory = ent_input.get()
     try:
@@ -78,7 +78,7 @@ def deleteDirectory():
         text_servermsg.insert(END,"\n")
         text_servermsg.insert(END,"Unable to delete directory")
     displayDir()
-    
+
 def deleteFile():
     file = ent_input.get()
     try:
@@ -89,7 +89,7 @@ def deleteFile():
         text_servermsg.insert(END,"\n")
         text_servermsg.insert(END,"Unable to delete file")
     displayDir()
-    
+
 def downloadFile():
     file = ent_input.get()
     down = open(file, "wb")
@@ -102,7 +102,7 @@ def downloadFile():
         text_servermsg.insert(END,"\n")
         text_servermsg.insert(END,"Unable to download file")
     displayDir()
-    
+
 def uploadFile():
     file = ent_input.get()
     try:
@@ -115,7 +115,7 @@ def uploadFile():
         text_servermsg.insert(END,"\n")
         text_servermsg.insert(END,"Unable to upload file")
     displayDir()
-    
+
 def closeConnection():
     try:
         text_servermsg.insert(END,"\n")
@@ -128,7 +128,7 @@ def closeConnection():
 
 window = tkinter.Tk()
 window.title("FTP Client")
-window.wm_iconbitmap("favicon.ico")
+# window.wm_iconbitmap("favicon.ico")
 window.geometry("1000x600")
 
 #Connect
