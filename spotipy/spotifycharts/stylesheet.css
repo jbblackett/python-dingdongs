@@ -1,0 +1,20 @@
+body {
+	text-align: center;
+	font-family: Helvetica;
+	background-color: #5B5554;
+	color: #FFFFFF;
+	font-size: 14px;
+}
+
+a {
+	color: #FFFFFF;
+}
+
+#container {
+    text-align:center; // needed if you expect IE 5
+}
+
+.centered {
+    margin:0px auto; // this sets left/right margin to auto and
+                     // centers the element
+}

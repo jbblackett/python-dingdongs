@@ -1,0 +1,5 @@
+password length - slider 5-20
+include lowercase letters - tickbox
+include uppercase letters - tickbox
+include numbers - tickbox
+include symbols - tickbox
