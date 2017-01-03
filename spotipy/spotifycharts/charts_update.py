@@ -68,7 +68,7 @@ def getHeader(title):
     <body>
     <h1><a href="index.html">Spotify Charts</a></h1>
     <h2>Various spotify charts built using the python module <a href="https://github.com/plamere/spotipy">spotipy by plamere</a></h2>
-    <h3><a href="http://github.com/jbblackett/python-dingdongs/spotipy/spotifycharts/charts_update.py">Source Code</a></h3>
+    <h3><a href="https://github.com/jbblackett/python-dingdongs/blob/master/spotipy/spotifycharts/charts_update.py">Source Code</a></h3>
     """
     return header
 
