@@ -143,10 +143,13 @@ def orderProducts():
 
 #Main program
 #Import products from file to list
-with open("products.csv", 'rU') as f:
-    reader = csv.reader(f)
-    products = list(list(rec) for rec in csv.reader(f, delimiter=','))
-
+try:
+        with open("products.csv", 'rU') as f:
+            reader = csv.reader(f)
+            products = list(list(rec) for rec in csv.reader(f, delimiter=','))
+        productsCsv = True
+except:
+        productsCsv = False
 #Options
 while True:
         #Print options
@@ -162,7 +165,10 @@ while True:
         elif num == '2':
                 print("\nThe check digit is " + calcCheckDigit(inputBarcode(7)) + ".\n")
         elif num == '3':
-                orderProducts()
+                if productsCsv:
+                        orderProducts()
+                else:
+                        print("\nCould not find products list (products.csv).\n")
         elif num == '4':
                 restockProducts()
         elif num == '5':
