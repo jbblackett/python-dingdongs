@@ -61,7 +61,7 @@ def orderProducts():
         print("| {0:^10} | {1:^5} | {2:^40} |".format("GTIN-8","Price","Description"))
         print(border)
         for i in range(len(products)):
-                print("| {0:^10} | {1:^5} | {2:^40} |" .format(products[i][0], "£" + str("%.2f" % float(products[i][2])), products[i][1]))
+                print("| {0:^10} | {1:^5} | {2:40} |" .format(products[i][0], "£" + str("%.2f" % float(products[i][2])), products[i][1]))
         print(border)
         #Loop to get list of wanted products and their quantities
         done = False
@@ -91,6 +91,9 @@ def orderProducts():
                                         if v < 1:
                                                 print("Quantity must be positive.")
                                                 continue
+                                        if v > 100000:
+                                                print("Cannot order more than 100,000 items.")
+                                                continue
                                         break
                                 except ValueError:
                                         print("Quantity must be an integer.")
@@ -117,7 +120,7 @@ def orderProducts():
         print()
         print("Thank you, here is your recipt:")
         print(borderlong)
-        print("| {0:^10} | {1:^50} | {2:^20} | {3:^10} | {4:^20} |".format("GTIN-8","Description","Price (each)","Quantity","Price (all)"))
+        print("| {0:10} | {1:^50} | {2:^20} | {3:^10} | {4:^20} |".format("GTIN-8","Description","Price (each)","Quantity","Price (all)"))
         print(borderlong)
         for i in range(len(order)):
                 #Use variables to make printing less complicated
@@ -128,7 +131,7 @@ def orderProducts():
                 priceall = "£" + str("%.2f" % float(order[i][2]))
 
                 #Print product row
-                print("| {0:^10} | {1:^50} | {2:^20} | {3:^10} | {4:^20} |".format(gtin,desc,pricepp,quantity,priceall))
+                print("| {0:^10} | {1:50} | {2:^20} | {3:^10} | {4:^20} |".format(gtin,desc,pricepp,quantity,priceall))
                 print(borderlong)
                 total += order[i][2]
 
