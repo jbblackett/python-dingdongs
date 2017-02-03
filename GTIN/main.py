@@ -2,8 +2,8 @@
 #Import csv module
 import csv
 #Initialise variables
-border = "-------------------------------------------------------------------------"
-borderlong = "------------------------------------------------------------------------------------------------------------------------"
+border = "—"*65
+borderlong = "—"*126
 #Function to input and validates given digit GTIN-8 code
 def inputBarcode(digits):
         valid = False
@@ -58,11 +58,11 @@ def orderProducts():
         print()
         print("Products:")
         print(border)
-        print("| {0:^10} | {1:^5} | {2:^50}".format("GTIN-8","Price","Description"))
+        print("| {0:^10} | {1:^5} | {2:^40} |".format("GTIN-8","Price","Description"))
         print(border)
         for i in range(len(products)):
-                print("| {0:^10} | {1:^5} | {2:^50}" .format(products[i][0], "£" + str("%.2f" % float(products[i][2])), products[i][1]))
-                print(border)
+                print("| {0:^10} | {1:^5} | {2:^40} |" .format(products[i][0], "£" + str("%.2f" % float(products[i][2])), products[i][1]))
+        print(border)
         #Loop to get list of wanted products and their quantities
         done = False
         while not done:
@@ -117,7 +117,7 @@ def orderProducts():
         print()
         print("Thank you, here is your recipt:")
         print(borderlong)
-        print("| {0:^10} | {1:^50} | {2:^20} | {3:^10} | {4:^20}".format("GTIN-8","Description","Price (each)","Quantity","Price (all)"))
+        print("| {0:^10} | {1:^50} | {2:^20} | {3:^10} | {4:^20} |".format("GTIN-8","Description","Price (each)","Quantity","Price (all)"))
         print(borderlong)
         for i in range(len(order)):
                 #Use variables to make printing less complicated
@@ -128,13 +128,13 @@ def orderProducts():
                 priceall = "£" + str("%.2f" % float(order[i][2]))
 
                 #Print product row
-                print("| {0:^10} | {1:^50} | {2:^20} | {3:^10} | {4:^20}".format(gtin,desc,pricepp,quantity,priceall))
+                print("| {0:^10} | {1:^50} | {2:^20} | {3:^10} | {4:^20} |".format(gtin,desc,pricepp,quantity,priceall))
                 print(borderlong)
                 total += order[i][2]
 
         #print price total row
         total = "£" + str("%.2f" % float(total))
-        print("| {0:^10} | {1:^50} | {2:^20} | {3:^10} | {4:^20}".format("Total","","","",total))
+        print("| {0:^10} | {1:^50} | {2:^20} | {3:^10} | {4:^20} |".format("Total ","","","",total))
         print(borderlong)
         print()        
 
