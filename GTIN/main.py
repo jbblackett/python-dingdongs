@@ -154,10 +154,29 @@ def orderProducts():
         print()
         restockProducts(order)
 
+
 #Function to restock any understocked products
 def restockProducts(order):
-        print(order)
+        print(stock)
+        #Reduce all current stock by the quantity in order
+        for i in range(len(order)):
+                quantity = int(order[i][1])
+                gtin = order[i][0]
+                #Find stock list index for current product
+                for j in range(len(stock)):
+                        try:
+                                stock[j].index(gtin)
+                                stockind = j
+                                continue
+                        except ValueError:
+                                pass
+                #Change current stock value
+                stock[stockind][1] = str(int(stock[stockind][1]) - quantity)
+        print("\n")
+        print(stock)
 
+
+        
 #Main program
 #Import products from file to list
 try:
