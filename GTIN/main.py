@@ -103,7 +103,7 @@ def orderProducts():
                         print()
                         print(str(quantity) + " x " + products[product][1] + " = £" + str("%.2f" % price))
                         #Add product code and quantity to order
-                        order.append([product,quantity,price])
+                        order.append([products[product][0],quantity])
                         print("Added to basket.")
                         print()
                         #Loop to find if another product wanted
@@ -120,29 +120,43 @@ def orderProducts():
         print()
         print("Thank you, here is your recipt:")
         print(borderlong)
-        print("| {0:10} | {1:^50} | {2:^20} | {3:^10} | {4:^20} |".format("GTIN-8","Description","Price (each)","Quantity","Price (all)"))
+        print("| {0:^10} | {1:^50} | {2:^20} | {3:^10} | {4:^20} |".format("GTIN-8","Description","Price (each)","Quantity","Price (total)"))
         print(borderlong)
         for i in range(len(order)):
                 #Use variables to make printing less complicated
-                gtin = products[order[i][0]][0]
-                desc = products[order[i][0]][1]
-                pricepp = "£" + str("%.2f" % float(products[order[i][0]][2]))
-                quantity = str(order[i][1])
-                priceall = "£" + str("%.2f" % float(order[i][2]))
+                gtin = order[i][0]
+                count = 0
+                for j in range(len(products)):
+                        try:
+                                products[j].index(gtin)
+                                productind = j
+                                continue
+                        except ValueError:
+                                pass
+                desc = products[productind][1]
+                price = float(products[productind][2])
+                pricepp = "£" + str("%.2f" % price)
+                
+                quantity = order[i][1]
+                
+                subtotal = float(products[productind][2]) * float(quantity)
+                priceall = "£" + str("%.2f" % subtotal)
 
                 #Print product row
                 print("| {0:^10} | {1:50} | {2:^20} | {3:^10} | {4:^20} |".format(gtin,desc,pricepp,quantity,priceall))
                 print(borderlong)
-                total += order[i][2]
+                total += subtotal
 
         #print price total row
         total = "£" + str("%.2f" % float(total))
         print("| {0:^10} | {1:^50} | {2:^20} | {3:^10} | {4:^20} |".format("Total ","","","",total))
         print(borderlong)
-        print()        
+        print()
+        restockProducts(order)
 
 #Function to restock any understocked products
-
+def restockProducts(order):
+        print(order)
 
 #Main program
 #Import products from file to list
@@ -153,14 +167,27 @@ try:
         productsCsv = True
 except:
         productsCsv = False
+
+#Import stock levels from file to two-dimensional list
+try:
+        with open("stock.csv", "rU") as f:
+            reader = csv.reader(f)
+            stock = list(list(rec) for rec in csv.reader(f, delimiter=","))
+        stockCsv = True
+except:
+        stockCsv = False
+
+#Print welcome message
+print("Welcome! Please use this program in IDLE in full screen (Python 3.0.0+).\n")
+
+
 #Options
 while True:
         #Print options
         print(" 1. Check the validity of a GTIN-8 barcode.")
         print(" 2. Calculate the check digit from the first 7 digits of a GTIN-8 barcode.")
         print(" 3. Order products from our inventory.")
-        print(" 4. Restock any under-stocked products.")
-        print(" 5. Exit.")
+        print(" 4. Exit.")
         #Input the option
         num = input("Enter a number: ")
         if num == '1':
@@ -169,10 +196,11 @@ while True:
                 print("\nThe check digit is " + calcCheckDigit(inputBarcode(7)) + ".\n")
         elif num == '3':
                 if productsCsv:
-                        orderProducts()
+                        if stockCsv:
+                                orderProducts()
+                        else:
+                                print("\nCound not find stock levels list (stock.csv).\n")
                 else:
                         print("\nCould not find products list (products.csv).\n")
         elif num == '4':
-                restockProducts()
-        elif num == '5':
                 exit()
