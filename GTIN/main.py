@@ -3,6 +3,7 @@
 import csv
 #Initialise variables
 products=[]
+stock=[]
 border = "—"*65
 borderlong = "—"*126
 #Function to input and validates given digit GTIN-8 code
@@ -55,6 +56,7 @@ def orderProducts():
         #Initialise variables
         order = []
         global border
+        global stock
         #Print products list
         print()
         print("Products:")
@@ -62,18 +64,37 @@ def orderProducts():
         print("| {0:^10} | {1:^5} | {2:^40} |".format("GTIN-8","Price","Description"))
         print(border)
         for i in range(len(products)):
-                print("| {0:^10} | {1:^5} | {2:40} |" .format(products[i][0], "£" + str("%.2f" % float(products[i][2])), products[i][1]))
+                #Get stock index so can check if no stock left
+                for j in range(len(stock)):
+                        try:
+                                stock[j].index(products[i][0])
+                                stockind = j
+                                continue
+                        except ValueError:
+                                pass
+                        
+                #Only display product if there is any
+                stockLevel = int(stock[stockind][1])
+                if stockLevel > 0:
+                        print("| {0:^10} | {1:^5} | {2:40} |" .format(products[i][0], "£" + str("%.2f" % float(products[i][2])), products[i][1]))
         print(border)
         #Loop to get list of wanted products and their quantities
         done = False
         while not done:
                 #Input code
-                code = input("Enter GTIN-8 product code: ")
+                repeat = True
+                while repeat:
+                        code = input("Enter GTIN-8 product code: ")
+                        for item in order:
+                                if item[0] == code:
+                                        print("\nYou have already ordered this product.\n")
+                                else:
+                                        repeat = False
                 found = False
                 for i in range(len(products)):
                         if products[i][0] == code:
                                 found = True
-                                product = i
+                                product = products[i]
                 #If code not in products list then print error message
                 if not found:
                         print("Product not found.")
@@ -82,7 +103,7 @@ def orderProducts():
                         #Display selected product
                         print()
                         print("Product found:")
-                        print(products[product][1] + " at " + "£" + str("%.2f" % float(products[product][2]) + " each."))
+                        print(product[1] + " at " + "£" + str("%.2f" % float(product[2]) + " each."))
                         print()
                         #Loop to get and validate quantity of product
                         while True:
@@ -90,21 +111,31 @@ def orderProducts():
                                 try:
                                         v = int(quantity)
                                         if v < 1:
-                                                print("Quantity must be positive.")
+                                                print("\nQuantity must be positive.\n")
                                                 continue
-                                        if v > 100000:
-                                                print("Cannot order more than 100,000 items.")
-                                                continue
+                                        #Find stock list index for current product
+                                        for j in range(len(stock)):
+                                                try:
+                                                        stock[j].index(product[0])
+                                                        stockind = j
+                                                        continue
+                                                except ValueError:
+                                                        pass
+                                        #If quantity is less than the current stock level
+                                        stockLevel = int(stock[stockind][1])
+                                        if v > stockLevel:
+                                                print("\nSorry, there are only " + str(stockLevel) + " products avaliable.\n")
+                                                continue                                                
                                         break
                                 except ValueError:
                                         print("Quantity must be an integer.")
                         #Calculate price of that quantity of product
-                        price = float(quantity) * float(products[product][2])
+                        price = float(quantity) * float(product[2])
                         #Print price of that quantity of product
                         print()
-                        print(str(quantity) + " x " + products[product][1] + " = £" + str("%.2f" % price))
+                        print(str(quantity) + " x " + product[1] + " = £" + str("%.2f" % price))
                         #Add product code and quantity to order
-                        order.append([products[product][0],quantity])
+                        order.append([product[0],quantity])
                         print("Added to basket.")
                         print()
                         #Loop to find if another product wanted
@@ -153,12 +184,13 @@ def orderProducts():
         print("| {0:^10} | {1:^50} | {2:^20} | {3:^10} | {4:^20} |".format("Total ","","","",total))
         print(borderlong)
         print()
-        restockProducts(order)
+        updateStockLevels(order)
 
 
 #Function to restock any understocked products
-def restockProducts(order):
+def updateStockLevels(order):
         #order format = [gtin,quantity]
+        
         #Reduce all current stock by the quantity in order
         for i in range(len(order)):
                 quantity = int(order[i][1])
@@ -173,7 +205,15 @@ def restockProducts(order):
                                 pass
                 #Change current stock value
                 stock[stockind][1] = str(int(stock[stockind][1]) - quantity)
-        print("\n")
+                
+        #Write updated stocks to stock file
+        with open('stock.csv', 'w', newline='') as file:
+                stockCsvObj = csv.writer(file, delimiter=',')
+                #Loop through stock file to write each row to file
+                for row in stock:
+                        stockCsvObj.writerow(row)
+
+
 
 #Main program
 #Import products from file to list
