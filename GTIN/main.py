@@ -2,6 +2,7 @@
 #Import csv module
 import csv
 #Initialise variables
+products=[]
 border = "—"*65
 borderlong = "—"*126
 #Function to input and validates given digit GTIN-8 code
@@ -157,7 +158,7 @@ def orderProducts():
 
 #Function to restock any understocked products
 def restockProducts(order):
-        print(stock)
+        #order format = [gtin,quantity]
         #Reduce all current stock by the quantity in order
         for i in range(len(order)):
                 quantity = int(order[i][1])
@@ -173,25 +174,24 @@ def restockProducts(order):
                 #Change current stock value
                 stock[stockind][1] = str(int(stock[stockind][1]) - quantity)
         print("\n")
-        print(stock)
 
-
-        
 #Main program
 #Import products from file to list
 try:
-        with open("products.csv", 'rU') as f:
-            reader = csv.reader(f)
-            products = list(list(rec) for rec in csv.reader(f, delimiter=','))
+        with open("products.csv", 'r') as file:
+            reader = csv.reader(file, delimiter=',')
+            for row in reader:
+                    products.append(list(row))
         productsCsv = True
 except:
         productsCsv = False
 
 #Import stock levels from file to two-dimensional list
 try:
-        with open("stock.csv", "rU") as f:
-            reader = csv.reader(f)
-            stock = list(list(rec) for rec in csv.reader(f, delimiter=","))
+        with open("stock.csv", "r") as file:
+            reader = csv.reader(file, delimiter=',')
+            for row in reader:
+                    stock.append(list(row))
         stockCsv = True
 except:
         stockCsv = False
