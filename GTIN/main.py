@@ -1,11 +1,12 @@
 #GTIN-8 TEST
 #Import csv module
 import csv
+import math
 #Initialise variables
 products=[]
 stock=[]
-border = "—"*65
-borderlong = "—"*126
+border = "—"*67
+borderlong = "—"*111
 #Function to input and validates given digit GTIN-8 code
 def inputBarcode(digits):
         valid = False
@@ -35,19 +36,14 @@ def calcCheckDigit(barcode):
         #Initialise variables
         MULTI = [3,1,3,1,3,1,3]
         check = 0
-        multen = None
+        mulTen = None
         #Multiply and sum the digits
         for i in range(7):
                 check += int(barcode[i]) * MULTI[i]
         #Find the nearest multiple of 10
-        if str(check)[len(str(check))-1] != '0':
-                multen = str(((int((str(check))[0]))+1))+'0'
-        else:
-                multen = check
+        mulTen = math.ceil(check/10)*10
         #Subtract from nearest multiple of 10
-        check = int(multen) - check
-        if len(str(check)) > 1:
-                check = str(check)[1]
+        check = int(mulTen) - check
         #Return check digit
         return str(check)
 
@@ -61,7 +57,7 @@ def orderProducts():
         print()
         print("Products:")
         print(border)
-        print("| {0:^10} | {1:^5} | {2:^40} |".format("GTIN-8","Price","Description"))
+        print("| {0:^10} | {1:^7} | {2:^40} |".format("GTIN-8","Price","Description"))
         print(border)
         for i in range(len(products)):
                 #Get stock index so can check if no stock left
@@ -76,7 +72,7 @@ def orderProducts():
                 #Only display product if there is any
                 stockLevel = int(stock[stockind][1])
                 if stockLevel > 0:
-                        print("| {0:^10} | {1:^5} | {2:40} |" .format(products[i][0], "£" + str("%.2f" % float(products[i][2])), products[i][1]))
+                        print("| {0:^10} | {1:^7} | {2:40} |" .format(products[i][0], "£" + str("%.2f" % float(products[i][2])), products[i][1]))
         print(border)
         #Loop to get list of wanted products and their quantities
         done = False
@@ -84,12 +80,16 @@ def orderProducts():
                 #Input code
                 repeat = True
                 while repeat:
-                        code = input("Enter GTIN-8 product code: ")
-                        for item in order:
-                                if item[0] == code:
-                                        print("\nYou have already ordered this product.\n")
-                                else:
-                                        repeat = False
+                        code = inputBarcode(8)
+                        if order:
+                                for item in order:
+                                        if item[0] == code:
+                                                print("\nYou have already ordered this product.")
+                                                repeat = True
+                                        else:
+                                                repeat = False
+                        else:
+                                repeat = False
                 found = False
                 for i in range(len(products)):
                         if products[i][0] == code:
@@ -152,7 +152,7 @@ def orderProducts():
         print()
         print("Thank you, here is your recipt:")
         print(borderlong)
-        print("| {0:^10} | {1:^50} | {2:^20} | {3:^10} | {4:^20} |".format("GTIN-8","Description","Price (each)","Quantity","Price (total)"))
+        print("| {0:^10} | {1:^40} | {2:^15} | {3:^10} | {4:^20} |".format("GTIN-8","Description","Price (each)","Quantity","Price (total)"))
         print(borderlong)
         for i in range(len(order)):
                 #Use variables to make printing less complicated
@@ -175,13 +175,13 @@ def orderProducts():
                 priceall = "£" + str("%.2f" % subtotal)
 
                 #Print product row
-                print("| {0:^10} | {1:50} | {2:^20} | {3:^10} | {4:^20} |".format(gtin,desc,pricepp,quantity,priceall))
+                print("| {0:^10} | {1:40} | {2:^15} | {3:^10} | {4:^20} |".format(gtin,desc,pricepp,quantity,priceall))
                 print(borderlong)
                 total += subtotal
 
         #print price total row
         total = "£" + str("%.2f" % float(total))
-        print("| {0:^10} | {1:^50} | {2:^20} | {3:^10} | {4:^20} |".format("Total ","","","",total))
+        print("| {0:^10} | {1:^40} | {2:^15} | {3:^10} | {4:^20} |".format("Total ","","","",total))
         print(borderlong)
         print()
         updateStockLevels(order)
@@ -262,4 +262,4 @@ while True:
                 else:
                         print("\nCould not find products list (products.csv).\n")
         elif num == '4':
-                exit()
+                break
