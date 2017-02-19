@@ -11,7 +11,7 @@ class Cleverbot(object):
 
     http://www.cleverbot.com/apis
     """
-    def __init__(self, key='adaf89e6a04492eafbe3277bf6514269', q='Hello'):
+    def __init__(self, key='', q='Hello'):
         self.HOST = "www.cleverbot.com"
 
         self.PROTOCOL = "https://"
