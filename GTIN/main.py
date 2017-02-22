@@ -5,6 +5,7 @@ import math
 #Initialise variables
 products=[]
 stock=[]
+restock=[]
 border = "—"*67
 borderlong = "—"*111
 #Function to input and validates given digit GTIN-8 code
@@ -154,6 +155,7 @@ def orderProducts():
         print(borderlong)
         print("| {0:^10} | {1:^40} | {2:^15} | {3:^10} | {4:^20} |".format("GTIN-8","Description","Price (each)","Quantity","Price (total)"))
         print(borderlong)
+        
         for i in range(len(order)):
                 #Use variables to make printing less complicated
                 gtin = order[i][0]
@@ -190,7 +192,6 @@ def orderProducts():
 #Function to restock any understocked products
 def updateStockLevels(order):
         #order format = [gtin,quantity]
-        
         #Reduce all current stock by the quantity in order
         for i in range(len(order)):
                 quantity = int(order[i][1])
@@ -205,15 +206,24 @@ def updateStockLevels(order):
                                 pass
                 #Change current stock value
                 stock[stockind][1] = str(int(stock[stockind][1]) - quantity)
-                
+
+        #Check for understocked products
+        for item in stock:
+                gtin = int(item[0])
+                current = int(item[1])
+                restockLevel = int(item[2])
+                restockTo = int(item[3])
+                #If current stock less than restock level
+                if current < restockLevel:
+                        restockAmount = restockTo - current
+                        restock.append([gtin,restockAmount])
+        
         #Write updated stocks to stock file
         with open('stock.csv', 'w', newline='') as file:
                 stockCsvObj = csv.writer(file, delimiter=',')
-                #Loop through stock file to write each row to file
+                #Loop through stock var to write each row to file
                 for row in stock:
                         stockCsvObj.writerow(row)
-
-
 
 #Main program
 #Import products from file to list
@@ -238,7 +248,6 @@ except:
 
 #Print welcome message
 print("Welcome! Please use this program in IDLE in full screen (Python 3.0.0+).\n")
-
 
 #Options
 while True:
