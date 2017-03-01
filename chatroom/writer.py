@@ -13,4 +13,4 @@ def sendMessage(msg):
 while True:
     m = input('\nWrite a message: ')
     if m:
-        sendMessage()
+        sendMessage(m)
