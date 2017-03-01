@@ -11,4 +11,6 @@ def sendMessage(msg):
     f.close()
 
 while True:
-    sendMessage(input('\nWrite a message: '))
+    m = input('\nWrite a message: ')
+    if msg:
+        sendMessage()
